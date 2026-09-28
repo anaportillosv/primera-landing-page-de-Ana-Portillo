@@ -1,0 +1,560 @@
+/* ==========================================================================
+   HOJA DE ESTILOS: style.css (Enfoque Mobile First)
+   Portafolio Web - Daniela Hernández
+   Material didáctico para estudiantes de Frontend: HTML5 + CSS3 + Responsive
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   FASE 1: VARIABLES CSS (CUSTOM PROPERTIES)
+   :root representa el elemento raíz (<html>).
+   Centralizamos la paleta de colores y las familias tipográficas para 
+   asegurar consistencia visual y facilitar el mantenimiento global.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Paleta cromática corporativa / de marca */
+  --ink: #0B0B0D;          /* Azul oscuro: fondos principales del hero y footer */
+  --ink-soft: #1E1F22;     /* Tono intermedio oscuro: bordes y contrastes secundarios */
+  --paper: #f2efe8;        /* Fondo gris claro suave: base neutra para lectura cómoda */
+  --card: #f2efe8;         /* Blanco puro: contenedores de contenido y tarjetas */
+  --text: #0b0b0d;         /* Color principal del texto: alto contraste y legibilidad */
+  --text-muted: #1e1f22;   /* Gris medio: textos secundarios, metadatos y descripciones */
+  
+  /* Colores de acento e interacción */
+  --accent: #FFD34D;       /* Amarillo ámbar: llamadas a la acción principales (CTA) y cursores */
+  --accent-2: #caa400;     /* Verde esmeralda: enlaces activos, bordes y acentos visuales */
+  --line: #1c2430;         /* Gris claro suave: separadores, divisores y bordes sutiles */
+
+  /* Tipografías */
+  --font-display: 'Space Grotesk', sans-serif; /* Tipografía para encabezados (h1, h2, h3) */
+  --font-body: 'Inter', sans-serif;           /* Tipografía neutra y legible para texto corrido */
+}
+
+/* --------------------------------------------------------------------------
+   FASE 2: RESET DE NAVEGADOR Y ACCESIBILIDAD
+   Reglas globales para eliminar comportamientos inconsistentes entre navegadores.
+   -------------------------------------------------------------------------- */
+
+/* box-sizing: border-box asegura que padding y border no aumenten el ancho total.
+   margin: 0 y padding: 0 eliminan los márgenes por defecto de etiquetas como body, p, h1, etc. */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Accesibilidad para personas sensibles al movimiento o con vestibulopatías:
+   Si el sistema operativo tiene activada la reducción de animaciones, se anulan transiciones. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Desplazamiento animado suave al navegar por anclas (#proyectos) */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Configuración básica del cuerpo del documento */
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background-color: var(--paper);
+  line-height: 1.6; /* Altura de línea idónea para lectura ergonómica */
+}
+
+/* Imágenes fluidas:
+   max-width: 100% impide que una foto grande desborde su contenedor.
+   display: block elimina el espacio blanco inferior que los navegadores añaden a elementos inline. */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Enlaces limpios: heredan el color del texto contenedor y quitan el subrayado feo por defecto */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Tipografía de encabezados con interlineado ceñido */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+}
+
+/* --------------------------------------------------------------------------
+   FASE 3: CONTENEDORES Y ESPACIADOS BASE (MOBILE)
+   Enfoque Mobile First: las secciones inician con padding ajustado a pantallas táctiles.
+   -------------------------------------------------------------------------- */
+section {
+  padding: 56px 20px; /* Espaciado vertical y lateral cómodo para dispositivos móviles */
+}
+
+/* Envoltorio central para delimitar el ancho máximo cuando la pantalla sea mayor */
+.wrap {
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --------------------------------------------------------------------------
+   FASE 4: SECCIÓN HERO (PORTADA / TERMINAL)
+   -------------------------------------------------------------------------- */
+.hero {
+  background-color: var(--ink);
+  color: #f4f6f8;
+  padding: 80px 20px 64px;
+  position: relative; /* Crea el contexto de posicionamiento para la cuadrícula decorativa */
+  overflow: hidden;   /* Evita barras de desplazamiento si un efecto desborda */
+}
+
+/* Capa decorativa que simula una cuadrícula sutil de terminal de programación */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* Cubre todo el fondo: top:0, right:0, bottom:0, left:0 */
+  background:
+    linear-gradient(180deg, transparent 0%, var(--ink) 92%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 64px);
+  pointer-events: none; /* Permite hacer clic o seleccionar texto a través de esta capa */
+}
+
+.hero-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  position: relative; /* Queda visible por encima del pseudo-elemento de fondo */
+  animation: rise 0.7s ease-out both; /* Animación de entrada suave */
+}
+
+/* Animación de elevación al cargar la página */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Simulación visual de comando prompt: daniela@frontend:~$ whoami */
+.prompt {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.9rem;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+/* Cursor parpadeante estilo línea de comandos */
+.prompt::after {
+  content: "";
+  width: 8px;
+  height: 1.1em;
+  background-color: var(--accent);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Título principal del Hero:
+   clamp(mínimo, valor-fluido, máximo) ajusta dinámicamente el tamaño de fuente al ancho del viewport */
+.hero h1 {
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  font-weight: 700;
+  max-width: 14ch; /* Limita la longitud a 14 caracteres aprox. para un quiebre visual elegante */
+}
+
+.hero .role {
+  margin-top: 14px;
+  font-size: 1.1rem;
+  color: #c3cad3;
+  max-width: 46ch;
+}
+
+.hero .meta {
+  margin-top: 16px;
+  font-size: 0.92rem;
+  color: #8b95a3;
+}
+
+/* Fila de botones de llamada a la acción */
+.cta-row {
+  margin-top: 32px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap; /* En móviles pequeños, si no caben uno al lado del otro, se apilan */
+}
+
+/* Estilo común de botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 24px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-solid {
+  background-color: var(--accent);
+  color: var(--ink);
+}
+
+.btn-outline {
+  border-color: #3a4658;
+  color: #eef1f5;
+}
+
+/* Fila de redes sociales */
+.social-row {
+  margin-top: 38px;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #9aa4b1;
+}
+
+.social-row a {
+  border-bottom: 1px solid transparent;
+}
+
+.social-row a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   FASE 5: SECCIÓN SOBRE MÍ (MOBILE FIRST: 1 COLUMNA)
+   En móvil la imagen y el texto van en una sola columna vertical.
+   -------------------------------------------------------------------------- */
+.about {
+  display: grid;
+  grid-template-columns: 1fr; /* Una sola columna fluida en móvil */
+  gap: 28px;
+  align-items: start;
+}
+
+.avatar {
+  width: 128px;
+  height: 128px;
+  border-radius: 8px;
+  object-fit: cover; /* Recorta la imagen proporcionalmente sin deformarla */
+  box-shadow: 0 12px 28px rgba(12, 20, 32, 0.12);
+}
+
+.about h2 {
+  font-size: 1.7rem;
+  margin-bottom: 16px;
+}
+
+.about p {
+  color: var(--text-muted);
+  max-width: 62ch;
+}
+
+/* Selector hermano adyacente: separa párrafos continuos sin margen en el primero */
+.about p + p {
+  margin-top: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   FASE 6: SECCIÓN HABILIDADES (MOBILE FIRST: 1 COLUMNA)
+   -------------------------------------------------------------------------- */
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Cada categoría ocupa el ancho completo en móvil */
+  gap: 26px;
+  margin-top: 26px;
+}
+
+.skill-group h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent-2); /* Línea decorativa verde */
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background-color: var(--card);
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------------------
+   FASE 7: SECCIÓN PROYECTOS (GRILLA AUTODIMENSIONABLE)
+   -------------------------------------------------------------------------- */
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 26px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.section-head h2 {
+  font-size: 1.7rem;
+}
+
+.section-head p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* CSS Grid con auto-fit y minmax():
+   Se adapta tanto en móvil como en escritorio de forma inteligente sin requerir
+   forzosamente un media query, pero garantizando al menos 260px por tarjeta. */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+.project-card {
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  padding: 24px;
+  display: flex;
+  flex-direction: column; /* Apila título, descripción, etiquetas y enlaces verticalmente */
+  gap: 14px;
+}
+
+/* Variación decorativa de bordes superiores mediante selectores pseudo-clase :nth-child */
+.project-card:nth-child(1) { border-top: 3px solid var(--accent-2); }
+.project-card:nth-child(2) { border-top: 3px solid var(--accent); }
+.project-card:nth-child(3) { border-top: 3px solid var(--ink-soft); }
+
+.project-card h3 {
+  font-size: 1.15rem;
+}
+
+/* flex-grow: 1 empuja los enlaces (.project-links) siempre al fondo de la tarjeta,
+   alineando los botones de todas las tarjetas aunque el texto tenga longitudes diferentes */
+.project-card p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  flex-grow: 1;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-tags span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background-color: var(--paper);
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+.project-links {
+  display: flex;
+  gap: 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.project-links a {
+  color: var(--accent-2);
+}
+
+.project-links a:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   FASE 8: SECCIÓN TRAYECTORIA (TIMELINE)
+   -------------------------------------------------------------------------- */
+.timeline {
+  position: relative;
+  margin-top: 30px;
+  padding-left: 28px;
+}
+
+/* Línea vertical continua */
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background-color: var(--line);
+}
+
+.tl-item {
+  position: relative;
+  padding-bottom: 30px;
+}
+
+.tl-item:last-child {
+  padding-bottom: 0;
+}
+
+/* Nodo o círculo de cada etapa */
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: -28px;
+  top: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--paper);
+  border: 3px solid var(--accent-2);
+}
+
+/* Estado activo (en curso) con acento dorado */
+.tl-item.current::before {
+  border-color: var(--accent);
+}
+
+.tl-item h3 {
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
+
+.tl-item span.badge {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.tl-item p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-top: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   FASE 9: SECCIÓN CONTACTO Y FOOTER (MOBILE FIRST)
+   -------------------------------------------------------------------------- */
+.contact {
+  background-color: var(--ink);
+  color: #eef1f5;
+}
+
+/* En móvil el contenido de contacto está apilado verticalmente */
+.contact .wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.contact h2 {
+  font-size: 1.7rem;
+  max-width: 22ch;
+}
+
+.contact p {
+  color: #9aa4b1;
+  margin-top: 10px;
+  max-width: 42ch;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-links a {
+  font-size: 0.95rem;
+}
+
+.contact-links a:hover {
+  color: var(--accent);
+}
+
+footer {
+  text-align: center;
+  padding: 24px 20px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background-color: var(--paper);
+}
+
+/* ==========================================================================
+   FASE 10: MEJORA PROGRESIVA (MEDIA QUERIES - MOBILE FIRST)
+   Usamos min-width: a medida que el espacio disponible crece, agregamos
+   más columnas y ampliamos los márgenes sin sobreescribir destructivamente.
+   ========================================================================== */
+
+/* TABLETS Y PANTALLAS MEDIANAS EN ADELANTE (>= 721px) */
+@media (min-width: 721px) {
+  /* Mayor aire visual en pantallas amplias */
+  section {
+    padding: 76px 24px;
+  }
+
+  .hero {
+    padding: 96px 24px 88px;
+  }
+
+  /* 'Sobre mí' pasa de 1 columna a 2 columnas: avatar a la izquierda y texto a la derecha */
+  .about {
+    grid-template-columns: 180px 1fr;
+    gap: 44px;
+  }
+
+  .avatar {
+    width: 168px;
+    height: 168px;
+  }
+
+  /* 'Habilidades' se distribuye en 3 columnas */
+  .skills-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  /* 'Contacto' se alinea horizontalmente con espacio entre mensaje y enlaces */
+  .contact .wrap {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* ESCRITORIO AMPLIO (>= 992px) */
+@media (min-width: 992px) {
+  .about {
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+  }
+}
